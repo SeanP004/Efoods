@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+		  xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+<jsp:directive.page contentType="text/html; charset=UTF-8" 
+	pageEncoding="UTF-8" session="false"/>
+<jsp:output doctype-root-element="html"
+	doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+	omit-xml-declaration="true" />
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head >
+	<title>Foods R US</title>
+</head>
+<body>
+	<div><a href="Login?login=true">Login</a></div>
+	<div><a href="Add">View Cart</a></div>
+	<div id="main_browse_page">
+		<h2>Browse Category Listing</h2>
+		<c:forEach var="e" items="${catalogs }">
+			<p><a href='Browse?cat=${e.id} '>${e.name }</a></p>
+			<p>${e.description }</p>	
+		</c:forEach>
+	</div>
+	
+	<div id="Search_item">
+		<form action="Browse" method="POST">
+			<div><label for="number">Item Number: 
+				<input type="string" name="number"/>
+			</label></div>
+			<input type="submit" name="select_item" value="search"/>
+		</form>
+	</div>
+	
+	<c:if test="${not empty items }">
+	<div id="items"> <h2>Browse Items Listing</h2>	
+		<a href="Browse">Back to Main Listing</a>
+		<c:forEach var="e" items="${items }">
+			<div>Item No.: ${e.number }</div>
+			<div>${e.name }</div>
+			<div><fmt:formatNumber type="currency" value="${e.price }"/> / ${e.unit } </div>
+			<form action="Add" method="POST">
+				<div><label for="qty">Qty: </label>
+					<input type="number" name="qty" value="1" step="1"/></div>
+					<input type="hidden" name="number" value="${e.number }"/>
+				<div><input type="submit" name="select_item" value="Add To Cart"/></div>
+			</form>
+		</c:forEach>
+	</div>			
+	<div id="error" ><strong>${error }</strong></div>
+	</c:if>
+</body>
+</html>
+</jsp:root>
+
+
+
+
+
+
+
+
+
+
+
+

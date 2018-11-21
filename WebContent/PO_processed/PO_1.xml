@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="styles/orders.xsl"?><order id="1" submitted="2018-10-31">
+	<customer account="1234T123">
+		<name>The International Taster</name>
+		<address id="1">
+			<street>120 Bloor Street West</street>
+			<city>Toronto</city>
+			<province>Ontario</province>
+			<postal>M5S 2R5</postal>
+		</address>
+	</customer>
+	<items>
+		<item number="60">
+			<name>Camembert Pierrot</name>
+			<price>34.00</price>
+			<quantity>4</quantity>
+			<extended>136.00</extended>
+		</item>
+		<item number="19">
+			<name>Teatime Chocolate Biscuits</name>
+			<price>9.20</price>
+			<quantity>1</quantity>
+			<extended>9.20</extended>
+		</item>
+	</items>
+	<total>145.20</total>
+	<PST>11.62</PST>
+	<shipping>0.00</shipping>
+	<GST>7.26</GST>
+	<grandTotal>164.08</grandTotal>
+</order>
