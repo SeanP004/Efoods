@@ -1,17 +1,12 @@
 package ctrl;
 
 import java.io.IOException;
-import java.io.Writer;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class Login
- */
 @WebServlet({"/Login"})
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -28,16 +23,18 @@ public class Login extends HttpServlet {
 		{
 			String user= request.getParameter("user");
 			String name = request.getParameter("name");
+			String back = (String) request.getSession().getAttribute("back");
 			request.getSession().setAttribute("user", user);
 			request.getSession().setAttribute("name",name);
 			request.setAttribute("user", user);
 			request.setAttribute("name", name);
-			this.getServletContext().getRequestDispatcher("/Login.jspx").forward(request, response);
+			//this.getServletContext().getRequestDispatcher("/Login.jspx").forward(request, response);
+			response.sendRedirect(back);
 		}
 		else if(request.getParameter("login")!=null)
 		{
 			String url = "https://www.eecs.yorku.ca/~roumani/servers/auth/oauth.cgi"+
-					"?back="+request.getRequestURL();
+					"?back="+(request.getRequestURL());
 			response.sendRedirect(url);
 		}
 		else

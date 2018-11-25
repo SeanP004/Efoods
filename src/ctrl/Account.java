@@ -17,22 +17,21 @@ public class Account extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String path = (String)this.getServletContext().getAttribute("xmlPOFolderPath");
-		String pathProcessed = (String)this.getServletContext().getAttribute("xmlPOProcessedFolderPath");
+
+		request.getSession().setAttribute("back", request.getRequestURL().toString());
 		String user = (String) request.getSession().getAttribute("user");
-		
 			
 			try {
 			  Engine engine = Engine.getInstance();
 			  if (request.getParameter("view") != null) {
 						//Server the PO view
 					String view = request.getParameter("view") + ".xml";
-					File file = new File(path + view);
+					File file = new File(engine.getXmlFolderPath() + view);
 					if (file.exists()) {
 							OrderBean order = engine.convertFromXMLFileToObject(file, user);
 							request.setAttribute("order", order);
 					} else {
-						 file = new File(pathProcessed + view);
+						 file = new File(engine.getXmlPOProcessedFolderPath() + view);
 						 if (file.exists()) {
 							 OrderBean order = engine.convertFromXMLFileToObject(file, user);
 							 request.setAttribute("order", order);
@@ -44,8 +43,8 @@ public class Account extends HttpServlet {
 					
 				}
 				else {
-					request.setAttribute("fileNames", engine.getXMLLinks(user, path));
-					request.setAttribute("processedfileNames", engine.getXMLLinks(user, pathProcessed));
+					request.setAttribute("fileNames", engine.getXMLLinks(user, engine.getXmlFolderPath()));
+					request.setAttribute("processedfileNames", engine.getXMLLinks(user, engine.getXmlPOProcessedFolderPath()));
 				 }
 			} catch (Exception e) {
 				e.printStackTrace();

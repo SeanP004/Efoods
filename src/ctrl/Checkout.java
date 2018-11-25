@@ -26,30 +26,26 @@ public class Checkout extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		request.getSession().setAttribute("back", request.getRequestURL().toString());
 		OrderBean order = (OrderBean) request.getSession().getAttribute("order");
 		//User is guranteed to have a value because a filter takes cares of that
 		String user = (String) request.getSession().getAttribute("user");
-		String path = (String)this.getServletContext().getAttribute("xmlPOFolderPath");
-		String pathProcessed = (String)this.getServletContext().getAttribute("xmlPOProcessedFolderPath");
+
 		
 		//checkout only if the user is logged in and the cart is not empty and getParameter 
 		if (!order.isEmpty() && request.getParameter("force") != null && user != null) {
-			if (this.getServletContext().getAttribute("totalPO") == null) 
-				this.getServletContext().setAttribute("totalPO", 0);
-			
-			int count = (int) this.getServletContext().getAttribute("totalPO");
+	
 			
 			order.setSubmitted(new Date());
 			order.setAccount(user);
-			order.setOrderNumber(count);
-			
-			count++;
-			this.getServletContext().setAttribute("totalPO", count);
-			
-			request.setAttribute("order", order);
+
 			try {
 				Engine engine = Engine.getInstance();
-				engine.jaxbObjectToXML(order, "PO_" + count, path); 
+				int count = engine.increment();
+				order.setOrderNumber(count);
+				request.setAttribute("order", order);
+				
+				engine.jaxbObjectToXML(order, "PO_" + count, engine.getXmlFolderPath()); 
 				order.clear();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -58,8 +54,8 @@ public class Checkout extends HttpServlet {
 			
 	    try {
 				  Engine engine = Engine.getInstance();
-				  request.setAttribute("fileNames", engine.getXMLLinks(user, path));
-				  request.setAttribute("processedfileNames", engine.getXMLLinks(user, pathProcessed));
+				  request.setAttribute("fileNames", engine.getXMLLinks(user, engine.getXmlFolderPath()));
+				  request.setAttribute("processedfileNames", engine.getXMLLinks(user, engine.getXmlPOProcessedFolderPath()));
 				 
 		} catch (Exception e) {
 			   e.printStackTrace();

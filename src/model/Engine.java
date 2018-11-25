@@ -16,12 +16,18 @@ public class Engine
 	static final double HST_RATE = 0.13;
 	static final double MIN_SHIPPING_WAIVER = 70;
 	static final double SHIPPING_COST = 5;
-	private ItemDAO itemDAO;
 	static Engine engine = null;
+	
+	private ItemDAO itemDAO;
+	private String xmlPOFolderPath;
+	private String xmlPOProcessedFolderPath;
+	private int count = 0;
 	
 	private Engine() throws Exception
 	{
 		itemDAO = ItemDAO.getInstance();
+		initializeFilePath();
+		initializeCount();
 	}
 	public synchronized static Engine getInstance() throws Exception
 	{
@@ -249,6 +255,76 @@ public class Engine
 	    }
 		return names;
 	}
+	
+	
+	public String getXmlPOProcessedFolderPath() {
+		return xmlPOProcessedFolderPath;
+	}
+	
+	public String getXmlFolderPath() {
+		return xmlPOFolderPath;
+	}
+	
+	public int increment() {
+		count++;
+		return count;
+	}
+	
+	
+	
+	private void initializeFilePath() {
+		
+		if (xmlPOFolderPath == null) {
+	        xmlPOFolderPath = System.getProperty("user.dir") + "/appData/PO/";
+	        File filePath = new File(xmlPOFolderPath);
+	        //Create folder if they don't exist
+	        if (!filePath.exists()) {
+	            try{
+	            	if (filePath.getParentFile().exists()) 
+	            		filePath.getParentFile().mkdirs();
+	            	
+	            	filePath.mkdirs();
+	            }
+	            
+	            catch(SecurityException se){
+	                //handle it
+	            }           
+	        }
+		}
+		
+		if (xmlPOProcessedFolderPath == null) {
+			xmlPOProcessedFolderPath = System.getProperty("user.dir") + "/appData/PO_processed/";
+			File filePath = new File(xmlPOProcessedFolderPath);
+			if (!filePath.exists()) 
+					filePath.mkdirs();
+			
+		}
+   }
+	
+	private void initializeCount() {	
+		
+	    File[] files = new File(xmlPOFolderPath).listFiles();
+	    
+	    for (File file : files) {
+	        if (!file.isDirectory() && file.getName().contains(".xml")) {
+	        		 String[] f = file.getName().split(".xml");
+	        		 int num = Integer.parseInt(f[0].split("_")[1]);
+	        		 if (num > count)
+	        			 count = num;
+	        }
+	    }
+	    
+	    files = new File(xmlPOProcessedFolderPath).listFiles();
+	    for (File file : files) {
+	        if (!file.isDirectory() && file.getName().contains(".xml")) {
+	        		 String[] f = file.getName().split(".xml");
+	        		 int num = Integer.parseInt(f[0].split("_")[1]);
+	        		 if (num > count)
+	        			 count = num;
+	        }
+	    }
+	}
+	
 }
 
 

@@ -66,43 +66,6 @@ public class Monitor implements
 		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
 		if(request.getParameter("select_item")!= null)
 			logAddItem(sre);
-		
-		if (request.getRequestURI().contains("Account") 
-				||  request.getRequestURI().contains("Checkout")) {
-			
-			initialize(sre.getServletContext());
-		}
-		
-	}
-	private void initialize(ServletContext servletContext) {
-		
-		if (servletContext.getAttribute("xmlPOFolderPath") == null) {
-	        String folderPath = System.getProperty("user.dir") + "/appData/PO/";
-	        File filePath = new File(folderPath);
-	        //Create folder if they don't exist
-	        if (!filePath.exists()) {
-	            try{
-	            	if (filePath.getParentFile().exists()) 
-	            		filePath.getParentFile().mkdirs();
-	            	
-	            	filePath.mkdirs();
-	            }
-	            
-	            catch(SecurityException se){
-	                //handle it
-	            }           
-	        }
-	        servletContext.setAttribute("xmlPOFolderPath", folderPath);
-		}
-		
-		if (servletContext.getAttribute("xmlPOProcessedFolderPath") == null) {
-			String folderPath = System.getProperty("user.dir") + "/appData/PO_processed/";
-			File filePath = new File(folderPath);
-			if (!filePath.exists()) 
-					filePath.mkdirs();
-			
-			servletContext.setAttribute("xmlPOProcessedFolderPath", folderPath);
-		}
 	}
 
 	//to log the adding of item by a user;

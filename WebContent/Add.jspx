@@ -45,7 +45,7 @@
 	
 	<form action="Checkout" method="POST">
 	  	<input type="hidden" id="force" name="force" value="true"/> 
-		<input type="submit" name="checkout" value="checkout" />
+		<input type="submit" name="checkout" value="${checkout}" />
 	</form>
 	
 	<div id="pricing">

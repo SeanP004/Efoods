@@ -30,6 +30,7 @@ public class Add extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		HttpSession session = request.getSession();
+		session.setAttribute("back", request.getRequestURL().toString());
 		OrderBean order = ((OrderBean) session.getAttribute("order"));
 		try
 		{
@@ -61,6 +62,11 @@ public class Add extends HttpServlet
 				request.setAttribute("error", e.getMessage());
 		}			
 
+		String  checkoutName = "checkout";
+		if (session.getAttribute("user") != null)
+			checkoutName = "confirm";
+		request.setAttribute("checkout", checkoutName);
+		
 		request.setAttribute("order", order);	
 		this.getServletContext().getRequestDispatcher("/Add.jspx").forward(request, response);
 	}

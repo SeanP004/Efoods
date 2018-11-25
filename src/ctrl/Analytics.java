@@ -29,6 +29,7 @@ public class Analytics extends HttpServlet
 	{
 		AnalyticEngine engine = AnalyticEngine.getInstance();
 		
+		@SuppressWarnings("unchecked")
 		double aveAddItem = engine.computeAveAddItemInterval((Map<String, UserActivity>)
 				request.getServletContext().getAttribute(AnalyticEngine.CLIENTS));
 		System.out.println("aveAddItem=" + aveAddItem);
@@ -42,6 +43,7 @@ public class Analytics extends HttpServlet
 		}
 		
 		
+		@SuppressWarnings("unchecked")
 		double aveCheckout = engine.computeCheckOutInterval(((Map<String, UserActivity>)
 				request.getServletContext().getAttribute(AnalyticEngine.CLIENTS))); 
 		System.out.println("aveCheckout=" + aveCheckout);
