@@ -1,5 +1,5 @@
 # Description 
-An Ecommerce Web Application built as part of the final project for EECS4413.
+An Ecommerce Web Application built with Java EE as part of the final project for EECS4413.
 Detailed description of implementation is under FinalReport.pdf
 
 # Screenshots
